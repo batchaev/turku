@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türküler - Eskişehir Yöresi</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e67e22;
+            --accent: #f1c40f;
+            --bg: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .card-container {
+            width: 450px;
+            height: 800px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* KAPAK ALANI */
+        .cover-area {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+            z-index: 10;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover-area.up {
+            transform: translateY(-92%);
+        }
+
+        .cover-area h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .cover-area h4 {
+            color: var(--secondary);
+            margin-top: 0;
+            letter-spacing: 2px;
+            font-weight: 400;
+            margin-bottom: 25px;
+        }
+
+        .visual-box {
+            width: 90%;
+            height: auto;
+            background: url('Halkalı-Seker.jpeg') center/contain no-repeat;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+        }
+
+        .btn-play {
+            margin-top: 40px;
+            padding: 18px 55px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(230,126,34,0.4);
+            transition: 0.3s ease;
+        }
+
+        .btn-play:hover {
+            transform: scale(1.05);
+            background: #d35400;
+        }
+
+        .content-area {
+            position: absolute;
+            top: 8%;
+            width: 100%;
+            height: 92%;
+            overflow-y: auto;
+            background: white;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            background: #000;
+            line-height: 0;
+        }
+
+        .text-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .section p {
+            color: #444;
+            line-height: 1.8;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .dede-quote {
+            background: #fff9f2;
+            padding: 20px;
+            border-radius: 15px;
+            font-style: italic;
+            border: 1px dashed var(--secondary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin: 4px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* YENİ: DERS BUTONU VE MODAL STİLLERİ */
+        .btn-lesson {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .btn-lesson:hover { background: #34495e; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            width: 80%;
+            border-radius: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 20px; top: 10px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container">
+    <div class="cover-area" id="coverArea">
+        <h2>Halkalı Şeker</h2>
+        <h4>ESKİŞEHİR YÖRESİ</h4>
+        <div class="visual-box"></div>
+        <button class="btn-play" id="mainBtn">KEŞFET</button>
+    </div>
+
+    <div class="content-area">
+        <div class="video-wrapper">
+            <div id="player"></div>
+        </div>
+
+        <div class="text-content">
+            <div class="section">
+                <h3>📜 Tarihsel Arka Plan</h3>
+                <p>Eskişehir yöresine ait olan "Halkalı Şeker", Anadolu’nun sözlü geleneği içerisinde günümüze ulaşmış anonim bir halk ezgisidir. TYMM kapsamında <strong>Saygı, Sevgi ve Dostluk</strong> değerleriyle eşleşmektedir.</p>
+            </div>
+
+            <div class="section">
+                <h3>👴 Dedem Anlatıyor</h3>
+                <div class="dede-quote">
+                    "Evlat, o zamanlar en büyük zenginlik 'Halkalı Şeker' idi. Birine şeker uzatmak, ona olan sevgini ve nezaketini sessizce söylemekti..."
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>🎓 Ders Entegrasyonu</h3>
+                <div class="tags-container">
+                    <span class="tag">Türkçe: Betimleme</span>
+                    <span class="tag">Matematik: Örüntüler</span>
+                    <span class="tag">Sosyal: Yerel Kimlik</span>
+                </div>
+                <button class="btn-lesson" onclick="openModal()">📚 TÜRKÇE DERSİ UYGULAMA ÖRNEĞİ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="lessonModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 style="color:var(--secondary); margin-top:0;">Türkçe Dersi Uygulama Planı</h2>
+        <hr>
+        <div style="text-align:left; color:#333; line-height:1.6;">
+            <p><strong>1. Etkinlik (Nezaket):</strong> Mehmet Dede'nin hikayesi üzerinden "ikram kültürü" ve <strong>Saygı</strong> değeri işlenir.</p>
+            <p><strong>2. Etkinlik (Betimleme):</strong> Türküdeki "Halkalı şeker" ve "Galabak dereleri" kelimeleriyle görsel okuryazarlık çalışması yapılır.</p>
+            <p><strong>3. Etkinlik (Eylem):</strong> Öğrenci, bir arkadaşına bu türkünün neşesini anlatan kısa bir **Dostluk** mektubu yazar.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '250',
+            width: '100%',
+            videoId: 'IxNlwaq8UTE'
+        });
+    }
+
+    document.getElementById('mainBtn').addEventListener('click', function() {
+        document.getElementById('coverArea').classList.add('up');
+        if(player && player.playVideo) { player.playVideo(); }
+    });
+
+    function openModal() { document.getElementById('lessonModal').style.display = "block"; }
+    function closeModal() { document.getElementById('lessonModal').style.display = "none"; }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('lessonModal')) { closeModal(); }
+    }
+</script>
+
+</body>
+</html>
